@@ -1,0 +1,5 @@
+Cómo agregar más proyectos (Instrucciones): He actualizado la guía CONTENT_GUIDE.md con una nueva sección. Básicamente:
+
+Copias el archivo projects/template.html.
+Lo renombras y editas con tu contenido.
+En index.html, cambias el enlace de la tarjeta (href="...") para que apunte a tu nuevo archivo.

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Title | Jairo Loría Portfolio</title>
+    <meta name="description" content="Project details and outcomes.">
+    <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .project-content {
+            margin-top: 120px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 20px 4rem;
+        }
+
+        .project-header {
+            margin-bottom: 3rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 2rem;
+        }
+
+        .project-tags {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .project-tag {
+            background: rgba(0, 255, 65, 0.1);
+            color: var(--primary-accent);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            border: 1px solid var(--primary-accent);
+        }
+
+        .project-body h2 {
+            color: var(--secondary-accent);
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-body p {
+            margin-bottom: 1.5rem;
+            color: #d0d0d0;
+            font-size: 1.1rem;
+        }
+
+        .project-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 3rem 0;
+        }
+
+        .gallery-item {
+            border: 1px solid #333;
+            background: #111;
+            height: 200px;
+            /* Placeholder height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+        }
+
+        .btn-github {
+            display: inline-block;
+            background: #333;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-family: var(--font-mono);
+            margin-top: 2rem;
+            transition: 0.3s;
+        }
+
+        .btn-github:hover {
+            background: var(--primary-accent);
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="overlay"></div>
+    <canvas id="matrix-bg"></canvas>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">&lt;JL_Security /&gt;</div>
+            <ul class="nav-links">
+                <li><a href="../index.html#about" data-text="About Me">About Me</a></li>
+                <li><a href="../index.html#projects" data-text="Projects">Projects</a></li>
+                <li><a href="../index.html#certifications" data-text="Certifications">Certifications</a></li>
+                <li><a href="../index.html#skills" data-text="Skills">Skills</a></li>
+                <li><a href="../index.html#blog" data-text="Blog">Blog</a></li>
+                <li><a href="../index.html#contact" class="btn-contact">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <article class="project-content">
+            <header class="project-header">
+                <div class="project-tags">
+                    <span class="project-tag">Category</span>
+                    <span class="project-tag">Tool Used</span>
+                </div>
+                <h1>Project Title</h1>
+                <p class="subtitle">A brief summary or subtitle of what this project accomplished.</p>
+            </header>
+
+            <div class="project-body">
+                <h2>Project Overview</h2>
+                <p>Describe the goal of the project. What problem were you solving? What was the scenario?</p>
+
+                <h2>Tools & Technologies</h2>
+                <ul>
+                    <li>Tool 1 (e.g., Wireshark)</li>
+                    <li>Tool 2 (e.g., Python)</li>
+                </ul>
+
+                <h2>Implementation / Methodology</h2>
+                <p>Step-by-step explanation of what you did. Use code blocks if necessary.</p>
+
+                <div class="project-gallery">
+                    <div class="gallery-item">Screenshot Placeholder 1</div>
+                    <div class="gallery-item">Screenshot Placeholder 2</div>
+                </div>
+
+                <h2>Results & Key Takeaways</h2>
+                <p>What was the outcome? What did you learn?</p>
+
+                <a href="#" class="btn-github"><i class="fab fa-github"></i> View Findings / Code</a>
+            </div>
+
+            <a href="../index.html#projects" class="back-link">&larr; Back to Projects</a>
+        </article>
+    </main>
+
+    <footer>
+        <p>Copyright &copy; 2024 Jairo Loría. All operating systems.</p>
+        <p class="footer-note">Built with &lt;3 and Secure Code.</p>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Setup: NAT Network Configuration | Jairo Loria</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --accent-color: #38bdf8;
+            --code-bg: #000000;
+            --success-color: #22c55e;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 2px solid var(--card-bg);
+        }
+
+        h1 { color: var(--accent-color); margin-bottom: 10px; }
+        h2 { color: var(--accent-color); border-left: 4px solid var(--accent-color); padding-left: 15px; margin-top: 40px; }
+
+        .badge {
+            background: #6366f1;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .step-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #334155;
+        }
+
+        .instruction-list {
+            padding-left: 20px;
+        }
+
+        .instruction-list li {
+            margin-bottom: 10px;
+        }
+
+        .screenshot-placeholder {
+            background: #000;
+            width: 100%;
+            height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid var(--accent-color);
+            color: #64748b;
+            font-style: italic;
+        }
+
+        .config-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: var(--code-bg);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .config-table th, .config-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #334155;
+        }
+
+        .config-table th {
+            background: #1e293b;
+            color: var(--accent-color);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <span class="badge">Lab Infrastructure</span>
+        <h1>Building a Secure Virtual Environment</h1>
+        <p>Step-by-step guide to NAT Network creation and VM isolation in VirtualBox.</p>
+    </header>
+
+    <section class="step-card">
+        <h2>Step 1: Creating the Global NAT Network</h2>
+        <p>Before connecting virtual machines, we must define a virtual switch that allows internal communication while providing controlled internet access.</p>
+        <ul class="instruction-list">
+            <li>Go to <strong>File</strong> > <strong>Network </strong> </li>
+            <li>Click on the <strong>NAT Networks</strong> tab.</li>
+            <li>Click <strong>Create</strong> to generate a new interface.</li>
+            <li>Configure the following parameters:</li>
+        </ul>
+        
+        <table class="config-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <td>Network Name</td>
+                <td>Lab1</td>
+            </tr>
+            <tr>
+                <td>Network CIDR</td>
+                <td>10.0.2.0/24</td>
+            </tr>
+            <tr>
+                <td>DHCP Support</td>
+                <td>Enabled (Checked)</td>
+            </tr>
+        </table>
+
+        <div class="screenshot-placeholder">
+            
+        <img src="./Files/img/lab1img1.png" alt="Descripción de la imagen" width="500">
+        </div>
+    </section>
+
+    <section class="step-card">
+        <h2>Step 2: Assigning VMs to the Network</h2>
+        <p>Each machine (Attacker and Victim) needs to be manually linked to the newly created virtual segment.</p>
+        <ul class="instruction-list">
+            <li>Select your VM (Kali Linux / Linux Mint) and click on <strong>Settings</strong>.</li>
+            <li>Navigate to the <strong>Network</strong> section.</li>
+            <li>Set "Attached to" to <strong>NAT Network</strong>.</li>
+            <li>Select <strong>Lab1</strong> from the Name dropdown menu.</li>
+        </ul>
+        <div class="screenshot-placeholder">
+            
+            <img src="./Files/img/lab1img2.png" alt="Descripción de la imagen" width="500">
+        </div>
+    </section>
+
+    <section class="step-card">
+        <h2>Step 3: Enabling Promiscuous Mode</h2>
+        <p>To perform packet sniffing and MITM attacks, the virtual network adapter must be able to "see" all traffic on the segment, not just traffic directed to its own MAC address.</p>
+        <ul class="instruction-list">
+            <li>Expand the <strong>Advanced</strong> section in the Network settings.</li>
+            <li>Locate <strong>Promiscuous Mode</strong>.</li>
+            <li>Change the setting to <strong>Allow All</strong>.</li>
+        </ul>
+        <div class="screenshot-placeholder">
+            <img src="./Files/img/lab1img3.png" alt="Descripción de la imagen" width="500">
+        </div>
+    </section>
+
+    <section class="step-card">
+        <h2>Step 4: Connectivity Verification</h2>
+        <p>Ensure both machines can communicate and reach the internet through the virtual gateway.</p>
+        <ul class="instruction-list">
+            <li>Boot both VMs and verify IP addresses using <code>ip address</code>.</li>
+            <li>Test the gateway connection: <code>ping 10.0.2.1</code>.</li>
+            <li>The environment is now ready for security testing.</li>
+        </ul>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Jairo Loria - Junior Cybersecurity Agent</p>
+        <p>Documentation for Educational Purposes Only.</p>
+    </footer>
+</div>
+
+</body>
+</html>

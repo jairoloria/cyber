@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Title | Jairo Loría Blog</title>
+    <meta name="description" content="Brief description of the article for SEO.">
+    <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Specific adjustments for internal/blog pages */
+        .blog-content {
+            margin-top: 120px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 20px 4rem;
+        }
+
+        .blog-header {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 2rem;
+        }
+
+        .blog-meta {
+            color: var(--primary-accent);
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .blog-body p {
+            margin-bottom: 1.5rem;
+            color: #d0d0d0;
+            font-size: 1.1rem;
+        }
+
+        .blog-body h2 {
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary-accent);
+        }
+
+        .code-block {
+            background: #111;
+            padding: 1.5rem;
+            border-left: 3px solid var(--primary-accent);
+            font-family: var(--font-mono);
+            overflow-x: auto;
+            margin: 2rem 0;
+            color: #aaddaa;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 3rem;
+            color: var(--text-dim);
+        }
+
+        .back-link:hover {
+            color: var(--primary-accent);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="overlay"></div>
+    <canvas id="matrix-bg"></canvas>
+
+    <header>
+        <nav class="navbar">
+            <!-- Note: adjusted href to go up one level with ../ -->
+            <div class="logo">&lt;JL_Security /&gt;</div>
+            <ul class="nav-links">
+                <li><a href="../index.html#about" data-text="About Me">About Me</a></li>
+                <li><a href="../index.html#projects" data-text="Projects">Projects</a></li>
+                <li><a href="../index.html#certifications" data-text="Certifications">Certifications</a></li>
+                <li><a href="../index.html#skills" data-text="Skills">Skills</a></li>
+                <li><a href="../index.html#blog" data-text="Blog">Blog</a></li>
+                <li><a href="../index.html#contact" class="btn-contact">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <article class="blog-content">
+            <header class="blog-header">
+                <span class="blog-meta">Published: October 24, 2024 | Category: CTF Write-up</span>
+                <h1>Article Title Here</h1>
+            </header>
+
+            <div class="blog-body">
+                <p>Article introduction. Here you can describe the CTF scenario or the problem you are solving.</p>
+
+                <h2>Enumeration</h2>
+                <p>Description of the scanning and discovery process.</p>
+
+                <div class="code-block">
+                    nmap -sC -sV -oA scan 192.168.1.10
+                </div>
+
+                <p>Analysis of results and next steps.</p>
+
+                <h2>Exploitation</h2>
+                <p>How you gained access to the system.</p>
+
+                <h2>Privilege Escalation</h2>
+                <p>How you obtained root/admin access.</p>
+            </div>
+
+            <a href="../index.html#blog" class="back-link">&larr; Back to Home</a>
+        </article>
+    </main>
+
+    <footer>
+        <p>Copyright &copy; 2024 Jairo Loría. All operating systems.</p>
+        <p class="footer-note">Built with &lt;3 and Secure Code.</p>
+    </footer>
+
+    <!-- Adjusted path for script -->
+    <script src="../js/script.js"></script>
+</body>
+
+</html>

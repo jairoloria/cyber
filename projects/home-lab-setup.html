@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Lab Setup | Jairo Loría Portfolio</title>
+    <meta name="description" content="Building unsafe environment for safe practice.">
+    <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .project-content {
+            margin-top: 120px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 20px 4rem;
+        }
+
+        .project-header {
+            margin-bottom: 3rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 2rem;
+        }
+
+        .project-tags {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .project-tag {
+            background: rgba(0, 255, 65, 0.1);
+            color: var(--primary-accent);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            border: 1px solid var(--primary-accent);
+        }
+
+        .project-body h2 {
+            color: var(--secondary-accent);
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-body p {
+            margin-bottom: 1.5rem;
+            color: #d0d0d0;
+            font-size: 1.1rem;
+        }
+
+        .project-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 3rem 0;
+        }
+
+        .gallery-item {
+            border: 1px solid #333;
+            background: #111;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+        }
+
+        .btn-github {
+            display: inline-block;
+            background: #333;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-family: var(--font-mono);
+            margin-top: 2rem;
+            transition: 0.3s;
+        }
+
+        .btn-github:hover {
+            background: var(--primary-accent);
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="overlay"></div>
+    <canvas id="matrix-bg"></canvas>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">&lt;JL_Security /&gt;</div>
+            <ul class="nav-links">
+                <li><a href="../index.html#about" data-text="About Me">About Me</a></li>
+                <li><a href="../index.html#projects" data-text="Projects">Projects</a></li>
+                <li><a href="../index.html#certifications" data-text="Certifications">Certifications</a></li>
+                <li><a href="../index.html#skills" data-text="Skills">Skills</a></li>
+                <li><a href="../index.html#blog" data-text="Blog">Blog</a></li>
+                <li><a href="../index.html#contact" class="btn-contact">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <article class="project-content">
+            <header class="project-header">
+                <div class="project-tags">
+                    <span class="project-tag">Virtualization</span>
+                    <span class="project-tag">Active Directory</span>
+                </div>
+                <h1>Home Lab Environment Setup</h1>
+                <p class="subtitle">Creating a safe, isolated sandbox for malware analysis and red teaming.</p>
+            </header>
+
+            <div class="project-body">
+                <h2>Project Overview</h2>
+                <p>Designed and built a virtualized network to practice Active Directory exploitation and defense
+                    evasion techniques safely.</p>
+
+                <h2>Tools & Technologies</h2>
+                <ul>
+                    <li>VirtualBox / VMware</li>
+                    <li>Windows Server 2019</li>
+                    <li>Kali Linux</li>
+                    <li>pfSense Firewall</li>
+                </ul>
+
+                <h2>Implementation / Methodology</h2>
+                <p>Configured pfSense to segregate the lab network from my home network. Installed a Domain Controller
+                    and joined two Windows 10 clients to the domain.</p>
+
+                <div class="project-gallery">
+                    <div class="gallery-item">Network Diagram</div>
+                    <div class="gallery-item">AD Users & Computers</div>
+                </div>
+
+                <h2>Results & Key Takeaways</h2>
+                <p>Gained hands-on experience with Windows Domain architecture, GPOs, and network segmentation.</p>
+            </div>
+
+            <a href="../index.html#projects" class="back-link">&larr; Back to Projects</a>
+        </article>
+    </main>
+
+    <footer>
+        <p>Copyright &copy; 2024 Jairo Loría. All operating systems.</p>
+        <p class="footer-note">Built with &lt;3 and Secure Code.</p>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</body>
+
+</html>

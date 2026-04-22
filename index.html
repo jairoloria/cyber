@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jairo Loría | Junior Cybersecurity Analyst</title>
+    <meta name="description"
+        content="Portfolio of Jairo Loría, Junior Cybersecurity Analyst with CCST certification. Vulnerability analysis, network security, and ethical hacking projects.">
+    <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <!-- Placeholder for FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="overlay"></div> <!-- CRT scanline effect overlay -->
+    <canvas id="matrix-bg"></canvas>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">&lt;JL_Security /&gt;</div>
+            <ul class="nav-links">
+                <li><a href="#about" data-text="About Me">About Me</a></li>
+                <li><a href="#projects" data-text="Projects">Projects</a></li>
+                <li><a href="#certifications" data-text="Certifications">Certifications</a></li>
+                <li><a href="#skills" data-text="Skills">Skills</a></li>
+                <li><a href="#blog" data-text="Blog">Blog</a></li>
+                <li><a href="#contact" class="btn-contact">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero">
+            <div class="hero-content">
+                <div class="glitch-wrapper">
+                    <h1 class="glitch" data-text="Jairo Loría">Jairo Loría</h1>
+                </div>
+                <h2 class="console-text">Junior Cybersecurity Analyst <span class="blink">_</span></h2>
+                <p class="hero-subtitle">Defending the digital future with intelligence and precision.</p>
+                <div class="hero-actions">
+                    <a href="#projects" class="btn btn-primary">:: View Projects ::</a>
+                    <a href="#contact" class="btn btn-secondary">Contact Me</a>
+                </div>
+                <div class="badge-container">
+                    <span class="cert-badge"><i class="fas fa-shield-alt"></i> CCST Cybersecurity Certified</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Me Section -->
+        <section id="about" class="container">
+            <div class="section-header">
+                <h3><span class="hash">#</span> About Me</h3>
+                <div class="line"></div>
+            </div>
+            <div class="about-grid">
+                <div class="profile-img-container">
+                    <!-- Placeholder image generated with CSS first, can replace with real img later -->
+                    <div class="profile-placeholder">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                </div>
+                <div class="about-text">
+                    <p>
+                        <span class="highlight">Junior Cybersecurity Analyst</span> motivated by the protection of
+                        digital assets and threat investigation.
+                        With my <span class="accent">CCST Cybersecurity</span> certification, I possess a solid
+                        foundation in network security, vulnerability management, and incident response.
+                    </p>
+                    <p>
+                        My approach combines technical curiosity with an analytical mindset to solve complex security
+                        problems.
+                        I am always learning new tools and techniques to stay one step ahead in the constantly evolving
+                        threat landscape.
+                    </p>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <span class="stat-number">10+</span>
+                            <span class="stat-label">Projects Completed</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">CCST</span>
+                            <span class="stat-label">Cisco Certified</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects / Labs Section -->
+        <section id="projects" class="container">
+            <div class="section-header">
+                <h3><span class="hash">#</span> Labs & Projects</h3>
+                <div class="line"></div>
+            </div>
+            <div class="projects-grid">
+                <!-- Project 1 -->
+                <article class="project-card">
+                    <div class="card-header">
+                        <i class="fas fa-flag"></i>
+                        <h4>Virtual Machine Network</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>Detailed walkthrough creating a virtualbox Network for pentesting
+                            </p>
+                        <div class="tags">
+                            <span>Linux</span>
+                            <span>Pentesting</span>
+                            <span>Arpspoofing</span>
+                            <span>DNS</span>
+                            
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="./blog/virtualnetwork.html" class="btn-small">View Detail &gt;</a>
+                    </div>
+                </article>
+
+                <!-- Project 2 -->
+                <article class="project-card">
+                    <div class="card-header">
+                        <i class="fas fa-network-wired"></i>
+                        <h4>DNS Man in the middle attack</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>This lab demonstrates a Man-in-the-Middle
+                             attack using ARP spoofing to intercept traffic and 
+                             Wireshark for deep packet forensic analysis.</p>
+                        <div class="tags">
+                            <span>Wireshark</span>
+                            <span>Forensics</span>
+                            <span>DNS</span>
+                            <span>Packet Analysis</span>
+                            <span>DNSspoofing</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="./blog/dnsspoof.html" class="btn-small">View Detail &gt;</a>
+                    </div>
+                </article>
+
+                <!-- Project 3 -->
+                <article class="project-card">
+                    <div class="card-header">
+                        <i class="fas fa-server"></i>
+                        <h4>Home Lab Setup</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>Configuration of a home lab for offensive and defensive security practice.</p>
+                        <div class="tags">
+                            <span>VirtualBox</span>
+                            <span>AD</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="./blog/virtualnetwork.html" class="btn-small">View Detail &gt;</a>
+                    </div>
+                </article>
+
+                <!-- Project 4 Placeholder -->
+                <article class="project-card">
+                    <div class="card-header">
+                        <i class="fas fa-bug"></i>
+                        <h4>Vulnerability Scan</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>Scanning and analysis of web infrastructure vulnerabilities using Nessus/OpenVAS.</p>
+                        <div class="tags">
+                            <span>Nessus</span>
+                            <span>Reporting</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="btn-small">View Detail &gt;</a>
+                    </div>
+                </article>
+
+                <!-- Add more cards as needed -->
+            </div>
+        </section>
+
+        <!-- Certifications Section -->
+        <section id="certifications" class="container">
+            <div class="section-header">
+                <h3><span class="hash">#</span> Certifications</h3>
+                <div class="line"></div>
+            </div>
+            <div class="certs-wrapper">
+                <div class="cert-item">
+                    <div class="cert-icon">
+                        <i class="fab fa-cisco"></i>
+                    </div>
+                    <div class="cert-info">
+                        <h4>Cisco Certified Support Technician (CCST)</h4>
+                        <span class="cert-type">Cybersecurity</span>
+                        <p>Validation of competencies in security principles, network security, and endpoint concepts.
+                        </p>
+                    </div>
+                </div>
+                <!-- Placeholder for more certs -->
+                <div class="cert-item">
+                    <div class="cert-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <div class="cert-info">
+                        <h4>Google Cybersecurity</h4>
+                        <span class="cert-type">In Progress</span>
+                        <p>Professional certification focused on SIEM tools, Python, and Linux.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills / Tools Section -->
+        <section id="skills" class="container">
+            <div class="section-header">
+                <h3><span class="hash">#</span> Technical Arsenal</h3>
+                <div class="line"></div>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h4>Networking</h4>
+                    <div class="skill-list">
+                        <span class="skill-badge"><i class="fas fa-network-wired"></i> TCP/IP</span>
+                        <span class="skill-badge"><i class="fas fa-wifi"></i> Wireshark</span>
+                        <span class="skill-badge"><i class="fas fa-sitemap"></i> Nmap</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h4>OS & Scripting</h4>
+                    <div class="skill-list">
+                        <span class="skill-badge"><i class="fab fa-linux"></i> Linux (Kali/Ubuntu)</span>
+                        <span class="skill-badge"><i class="fab fa-windows"></i> Windows Server</span>
+                        <span class="skill-badge"><i class="fab fa-python"></i> Python</span>
+                        <span class="skill-badge"><i class="fas fa-terminal"></i> Bash</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h4>Tools</h4>
+                    <div class="skill-list">
+                        <span class="skill-badge"><i class="fas fa-biohazard"></i> Metasploit</span>
+                        <span class="skill-badge"><i class="fas fa-globe"></i> Burp Suite</span>
+                        <span class="skill-badge"><i class="fas fa-search"></i> Splunk</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog Section -->
+        <section id="blog" class="container">
+            <div class="section-header">
+                <h3><span class="hash">#</span> Security Log (Blog)</h3>
+                <div class="line"></div>
+            </div>
+            <div class="blog-list">
+                <article class="blog-preview">
+                    <span class="date">Oct 24, 2024</span>
+                    <h4>Analyzing the Latest DDoS Attack</h4>
+                    <p>A technical breakdown of how distributed denial of service attacks work and mitigation
+                        strategies.</p>
+                    <a href="#" class="read-more">Read Article [/]</a>
+                </article>
+                <article class="blog-preview">
+                    <span class="date">Sep 15, 2024</span>
+                    <h4>Introduction to Steganography</h4>
+                    <p>How to hide information in plain sight: basic techniques and tools for CTF.</p>
+                    <a href="#" class="read-more">Read Article [/]</a>
+                </article>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact">
+            <div class="container contact-wrapper">
+                <div class="section-header">
+                    <h3><span class="hash">#</span> Initialize Communication</h3>
+                    <div class="line"></div>
+                </div>
+                <form class="contact-form">
+                    <div class="form-group">
+                        <label for="name">User_ID:</label>
+                        <input type="text" id="name" placeholder="Your Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Return_Channel:</label>
+                        <input type="email" id="email" placeholder="youremail@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Payload:</label>
+                        <textarea id="message" rows="5" placeholder="Write your message here..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Execute Send</button>
+                </form>
+                <div class="social-links">
+                    <a href="#" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="mailto:email@example.com" title="Email"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Copyright &copy; 2024 Jairo Loría. All operating systems.</p>
+        <p class="footer-note">Built with &lt;3 and Secure Code.</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>
