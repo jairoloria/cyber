@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIST CSF 2.0 Gap Analysis | Jairo Loria</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --accent-color: #38bdf8;
+            --code-bg: #000000;
+            --success-color: #22c55e;
+            --danger-color: #ef4444;
+            --warning-color: #f97316;
+            --caution-color: #eab308;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 2px solid var(--card-bg);
+        }
+
+        h1 { color: var(--accent-color); margin-bottom: 10px; }
+        h2 { color: var(--accent-color); border-left: 4px solid var(--accent-color); padding-left: 15px; margin-top: 40px; }
+
+        .badge {
+            background: #6366f1;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .step-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #334155;
+        }
+
+        .instruction-list {
+            padding-left: 20px;
+        }
+
+        .instruction-list li {
+            margin-bottom: 10px;
+        }
+
+        .screenshot-placeholder {
+            background: #000;
+            width: 100%;
+            height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid var(--accent-color);
+            color: #64748b;
+            font-style: italic;
+            overflow: hidden;
+        }
+
+        .config-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: var(--code-bg);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .config-table th, .config-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #334155;
+        }
+
+        .config-table th {
+            background: #1e293b;
+            color: var(--accent-color);
+        }
+
+        .risk-high { color: var(--danger-color); font-weight: bold; }
+        .risk-med { color: var(--warning-color); font-weight: bold; }
+        .risk-low { color: var(--caution-color); font-weight: bold; }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <span class="badge">Governance & Risk Compliance</span>
+        <h1>NIST CSF 2.0: Gap Analysis Project</h1>
+        <p>A practical cybersecurity assessment and infrastructure remediation plan for Fintech Innova Inc.</p>
+    </header>
+
+    <section class="step-card">
+        <h2>Phase 1: Executive Summary & Scope</h2>
+        <p>This project evaluates the current cybersecurity posture of <strong>Fintech Innova Inc.</strong> (a fictitious financial technology startup) against the NIST Cybersecurity Framework (CSF) 2.0. The goal is to identify vulnerabilities in their cloud and on-premise infrastructure and provide a strategic roadmap for mitigation.</p>
+        <ul class="instruction-list">
+            <li><strong>Framework:</strong> NIST CSF 2.0 Core (Govern, Identify, Protect, Detect, Respond, Recover).</li>
+            <li><strong>Scope:</strong> Corporate internal network (LAN), core routing infrastructure, and cloud-hosted databases.</li>
+            <li><strong>Objective:</strong> Align technical controls with PCI-DSS requirements to ensure data privacy and network integrity.</li>
+        </ul>
+        <div class="screenshot-placeholder">
+            <!-- Sugerencia: Coloca aquí una imagen de la estructura del NIST CSF 2.0 o el logo del marco -->
+            <img src="./Files/img/nist-framework-overview.png" alt="NIST CSF 2.0 Core Functions Overview" width="500">
+        </div>
+    </section>
+
+    <section class="step-card">
+        <h2>Phase 2: Findings & Gap Matrix</h2>
+        <p>During the assessment, several critical gaps were identified comparing the organization's Current Profile against the Target Profile. The findings emphasize network security and access control deficiencies.</p>
+        
+        <table class="config-table">
+            <tr>
+                <th>NIST Code</th>
+                <th>Identified Gap (Current State)</th>
+                <th>Remediation Action</th>
+                <th>Risk Level</th>
+            </tr>
+            <tr>
+                <td><strong>PR.AC-05</strong> (Network Segregation)</td>
+                <td>Flat network topology. Guest Wi-Fi and production servers share the same logical subnet.</td>
+                <td>Implement VLANs and configure strict Access Control Lists (ACLs) on core switches.</td>
+                <td class="risk-high">CRITICAL</td>
+            </tr>
+            <tr>
+                <td><strong>PR.AA-01</strong> (Authentication)</td>
+                <td>Cloud database administrators use single-factor authentication (passwords only).</td>
+                <td>Enforce mandatory Multi-Factor Authentication (MFA) across all elevated accounts.</td>
+                <td class="risk-high">CRITICAL</td>
+            </tr>
+            <tr>
+                <td><strong>ID.AM-01</strong> (Asset Inventory)</td>
+                <td>Hardware inventory is maintained via outdated manual spreadsheets.</td>
+                <td>Deploy automated network scanning (e.g., Nmap) to build a dynamic asset map.</td>
+                <td class="risk-med">HIGH</td>
+            </tr>
+            <tr>
+                <td><strong>RS.MA-01</strong> (Incident Response)</td>
+                <td>No formalized incident response document or communication plan exists.</td>
+                <td>Draft an Incident Response Playbook defining roles during a cyberattack.</td>
+                <td class="risk-low">MEDIUM</td>
+            </tr>
+        </table>
+    </section>
+
+    <section class="step-card">
+        <h2>Phase 3: Network Remediation Strategy</h2>
+        <p>To address the critical finding <strong>PR.AC-05</strong>, a network redesign is required to contain potential breaches. The following technical steps outline the infrastructure upgrade:</p>
+        <ul class="instruction-list">
+            <li><strong>Subnetting:</strong> Divide the <code>10.0.0.0/16</code> network into smaller, manageable <code>/24</code> subnets for HR, IT, and Guest networks.</li>
+            <li><strong>VLAN Configuration:</strong> Isolate server traffic (VLAN 10) from regular employee workstations (VLAN 20).</li>
+            <li><strong>Routing Rules:</strong> Apply ACLs on the core router to explicitly drop any traffic initiated from the Guest VLAN targeting the Server VLAN.</li>
+        </ul>
+        <div class="screenshot-placeholder">
+            <!-- Sugerencia: Coloca aquí una captura de pantalla de Packet Tracer mostrando la topología segmentada -->
+            <img src="./Files/img/packet-tracer-vlan.png" alt="Packet Tracer VLAN Topology Setup" width="500">
+        </div>
+    </section>
+
+    <section class="step-card">
+        <h2>Phase 4: Conclusion & Business Impact</h2>
+        <p>By executing this remediation roadmap, Fintech Innova Inc. transforms its security posture from a reactive state to a proactive, governance-driven model. The implementation of VLAN segmentation and MFA directly reduces the attack surface, ensuring compliance with financial regulations and safeguarding customer data.</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Jairo Loria - Junior Cybersecurity Agent</p>
+        <p>Portfolio Project - Documentation for Educational Purposes.</p>
+    </footer>
+</div>
+
+</body>
+</html>
