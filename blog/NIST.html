@@ -239,18 +239,7 @@
         </table>
     </section>
 
-    <section class="step-card">
-        <h2>Phase 3: Network Remediation Strategy</h2>
-        <p>To address the critical finding <strong>PR.AC-05</strong>, a network redesign is required to contain potential breaches. The following technical steps outline the infrastructure upgrade:</p>
-        <ul class="instruction-list">
-            <li><strong>Subnetting:</strong> Divide the <code>10.0.0.0/16</code> network into smaller, manageable <code>/24</code> subnets for HR, IT, and Guest networks.</li>
-            <li><strong>VLAN Configuration:</strong> Isolate server traffic (VLAN 10) from regular employee workstations (VLAN 20).</li>
-            <li><strong>Routing Rules:</strong> Apply ACLs on the core router to explicitly drop any traffic initiated from the Guest VLAN targeting the Server VLAN.</li>
-        </ul>
-        <--div class="screenshot-placeholder">
-            <!-- Sugerencia: Coloca aquí una captura de pantalla de Packet Tracer mostrando la topología segmentada -->
-            <img src="./Files/img/packet-tracer-vlan.png" alt="Packet Tracer VLAN Topology Setup" width="500">
-        </div>
+    
         <section class="step-card">
         <h2>Phase 3: Comprehensive Remediation Strategy</h2>
         <p>To systematically address the 10 identified gaps, the remediation roadmap has been divided into three operational pillars: Infrastructure, Operations, and Governance. This ensures a balanced allocation of IT resources.</p>
