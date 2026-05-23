@@ -132,10 +132,8 @@
             <li><strong>Scope:</strong> Corporate internal network (LAN), core routing infrastructure, and cloud-hosted databases.</li>
             <li><strong>Objective:</strong> Align technical controls with PCI-DSS requirements to ensure data privacy and network integrity.</li>
         </ul>
-        <div class="screenshot-placeholder">
-            <!-- Sugerencia: Coloca aquí una imagen de la estructura del NIST CSF 2.0 o el logo del marco -->
-            <img src="./Files/img/nist-framework-overview.png" alt="NIST CSF 2.0 Core Functions Overview" width="500">
-        </div>
+        
+    </div>
     </section>
 
     <section class="step-card">
@@ -173,6 +171,71 @@
                 <td>Draft an Incident Response Playbook defining roles during a cyberattack.</td>
                 <td class="risk-low">MEDIUM</td>
             </tr>
+            <!-- GOVERN (GV) & IDENTIFY (ID) -->
+            <tr>
+                <td><strong>GV.PO-01</strong> (Security Policies)</td>
+                <td>No formal Access Control Policy; sysadmins create accounts based on verbal requests.</td>
+                <td>Draft and enforce a strict Role-Based Access Control (RBAC) policy.</td>
+                <td class="risk-high">CRITICAL</td>
+            </tr>
+            <tr>
+                <td><strong>GV.OC-04</strong> (Critical Dependencies)</td>
+                <td>Core network relies on a single ISP. An outage halts all financial transactions.</td>
+                <td>Implement a secondary ISP connection with automated WAN failover.</td>
+                <td class="risk-high">CRITICAL</td>
+            </tr>
+            <tr>
+                <td><strong>ID.AM-02</strong> (Software Inventory)</td>
+                <td>Unauthorized software (Shadow IT) found on several Linux and Windows endpoints.</td>
+                <td>Deploy application whitelisting and centralize software deployment.</td>
+                <td class="risk-med">HIGH</td>
+            </tr>
+            <tr>
+                <td><strong>ID.RA-01</strong> (Vulnerability Scans)</td>
+                <td>Core routers and firewalls are never scanned for CVEs or outdated firmware.</td>
+                <td>Schedule automated weekly vulnerability scans using OpenVAS/Nessus.</td>
+                <td class="risk-high">CRITICAL</td>
+            </tr>
+
+            <!-- PROTECT (PR) & DETECT (DE) -->
+            <tr>
+                <td><strong>PR.DS-02</strong> (Data in Transit)</td>
+                <td>Network engineers manage core switches using unencrypted Telnet and HTTP.</td>
+                <td>Disable Telnet/HTTP globally; enforce SSHv2 and HTTPS for device management.</td>
+                <td class="risk-high">CRITICAL</td>
+            </tr>
+            <tr>
+                <td><strong>PR.AC-06</strong> (Physical Access)</td>
+                <td>The on-premise server rack is located in an unlocked utility room.</td>
+                <td>Install biometric locks and CCTV monitoring for the server room.</td>
+                <td class="risk-med">HIGH</td>
+            </tr>
+            <tr>
+                <td><strong>PR.AT-01</strong> (Awareness Training)</td>
+                <td>Staff frequently click on suspicious links; no phishing training exists.</td>
+                <td>Launch a quarterly Phishing Simulation and Cybersecurity Awareness program.</td>
+                <td class="risk-med">HIGH</td>
+            </tr>
+            <tr>
+                <td><strong>DE.CM-01</strong> (Network Monitoring)</td>
+                <td>Router and server logs are stored locally and overwritten every 7 days.</td>
+                <td>Deploy a centralized Syslog server / SIEM to retain and analyze network traffic.</td>
+                <td class="risk-high">CRITICAL</td>
+            </tr>
+
+            <!-- RESPOND (RS) & RECOVER (RC) -->
+            <tr>
+                <td><strong>RS.MA-02</strong> (IR Plan Testing)</td>
+                <td>An Incident Response plan exists on paper but has never been tested by the IT team.</td>
+                <td>Conduct bi-annual tabletop exercises simulating ransomware and DDoS attacks.</td>
+                <td class="risk-low">MEDIUM</td>
+            </tr>
+            <tr>
+                <td><strong>RC.RP-02</strong> (Recovery Testing)</td>
+                <td>Database backups are performed nightly, but restoration is never tested.</td>
+                <td>Schedule monthly backup restoration tests in an isolated VM environment.</td>
+                <td class="risk-med">HIGH</td>
+            </tr>
         </table>
     </section>
 
@@ -184,10 +247,41 @@
             <li><strong>VLAN Configuration:</strong> Isolate server traffic (VLAN 10) from regular employee workstations (VLAN 20).</li>
             <li><strong>Routing Rules:</strong> Apply ACLs on the core router to explicitly drop any traffic initiated from the Guest VLAN targeting the Server VLAN.</li>
         </ul>
-        <div class="screenshot-placeholder">
+        <--div class="screenshot-placeholder">
             <!-- Sugerencia: Coloca aquí una captura de pantalla de Packet Tracer mostrando la topología segmentada -->
             <img src="./Files/img/packet-tracer-vlan.png" alt="Packet Tracer VLAN Topology Setup" width="500">
         </div>
+        <section class="step-card">
+        <h2>Phase 3: Comprehensive Remediation Strategy</h2>
+        <p>To systematically address the 10 identified gaps, the remediation roadmap has been divided into three operational pillars: Infrastructure, Operations, and Governance. This ensures a balanced allocation of IT resources.</p>
+        
+        <h3 style="color: var(--accent-color); margin-top: 20px;">Pillar 1: Network & Infrastructure Hardening</h3>
+        <ul class="instruction-list">
+            <li><strong>Secure Device Management (PR.DS-02):</strong> Access all Cisco/infrastructure devices and disable Telnet (<code>no ip server telnet</code>). Generate RSA keys and enforce SSH version 2.</li>
+            <li><strong>High Availability (GV.OC-04):</strong> Configure a dual-WAN router setup. Implement routing protocols (e.g., OSPF or BGP) or IP SLA to automatically failover to a backup ISP if the primary link drops.</li>
+            <li><strong>Log Centralization (DE.CM-01):</strong> Deploy a central Syslog server (e.g., using Linux-based Rsyslog or an ELK stack). Configure all switches, routers, and firewalls to forward logs to this secure, centralized vault.</li>
+            <li><strong>Physical Security (PR.AC-06):</strong> Restrict server room access with badge readers and log all physical entry events.</li>
+        </ul>
+
+        <h3 style="color: var(--accent-color); margin-top: 20px;">Pillar 2: Proactive Operations & Testing</h3>
+        <ul class="instruction-list">
+            <li><strong>Vulnerability Management (ID.RA-01):</strong> Integrate tools like Nessus or OpenVAS to scan the <code>10.0.0.0/16</code> network weekly. Prioritize patching devices with critical CVEs (Common Vulnerabilities and Exposures).</li>
+            <li><strong>Restoration Drills (RC.RP-02):</strong> Establish a "Restoration Friday" protocol on the first week of every month to restore the primary SQL database into an isolated VirtualBox/VMware sandbox to verify data integrity.</li>
+            <li><strong>Endpoint Control (ID.AM-02):</strong> Implement Group Policy Objects (GPO) for Windows and execution policies for Linux to block unauthorized software installations.</li>
+        </ul>
+
+        <h3 style="color: var(--accent-color); margin-top: 20px;">Pillar 3: Governance & Human Risk</h3>
+        <ul class="instruction-list">
+            <li><strong>Access Policy (GV.PO-01):</strong> Draft a strict Role-Based Access Control (RBAC) document. Require IT tickets and manager approval for any new account creation or privilege escalation.</li>
+            <li><strong>Phishing Simulations (PR.AT-01):</strong> Deploy a managed awareness platform to send monthly simulated phishing emails. Users who fail must complete a 10-minute mandatory security module.</li>
+            <li><strong>Tabletop Exercises (RS.MA-02):</strong> Run a 2-hour simulated cyberattack drill with the IT team and management every 6 months to ensure everyone knows their role during an actual crisis.</li>
+        </ul>
+
+        
+            <!-- Sugerencia: Coloca aquí un diagrama de Gantt o una imagen que muestre el Syslog/monitoreo de red -->
+            
+        </div>
+    </section>
     </section>
 
     <section class="step-card">
