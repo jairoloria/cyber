@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIEM Lab: Brute Force Detection with Splunk | Jairo Loria</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --accent-color: #38bdf8;
+            --code-bg: #000000;
+            --success-color: #22c55e;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 2px solid var(--card-bg);
+        }
+
+        h1 { color: var(--accent-color); margin-bottom: 10px; }
+        h2 { color: var(--accent-color); border-left: 4px solid var(--accent-color); padding-left: 15px; margin-top: 40px; }
+
+        .badge {
+            background: #6366f1;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .step-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #334155;
+        }
+
+        .instruction-list {
+            padding-left: 20px;
+        }
+
+        .instruction-list li {
+            margin-bottom: 10px;
+        }
+
+        .screenshot-placeholder {
+            background: #000;
+            width: 100%;
+            height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid var(--accent-color);
+            color: #64748b;
+            font-style: italic;
+            overflow: hidden;
+        }
+
+        .screenshot-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .config-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: var(--code-bg);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .config-table th, .config-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #334155;
+        }
+
+        .config-table th {
+            background: #1e293b;
+            color: var(--accent-color);
+        }
+
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #f43f5e;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        pre {
+            background: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            overflow-x: auto;
+            color: #34d399;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <span class="badge">SIEM & Analytics</span>
+        <h1>SSH Brute Force Detection & Alerting</h1>
+        <p>Analyzing Linux auth logs, building high-fidelity SPL queries, and configuring real-time security alerts in Splunk.</p>
+    </header>
+
+    <section class="step-card">
+        <h2>Step 1: Ingesting and Filtering Authentication Logs</h2>
+        <p>To detect identity-based attacks, we target Linux <code>secure</code> or <code>auth.log</code> files. We start by filtering out successful authentications to isolate failed attempts that typically signify a scanning or brute-force pattern.</p>
+        <ul class="instruction-list">
+            <li>For this lab we generated an attack from another host.</li>
+            <li>Navigate to the <strong>Search & Reporting</strong> App in Splunk.</li>
+            <li>Set the time picker to <strong>Last 24 hours</strong>.</li>
+            <li>Run an initial query targeting failed password attempts using explicit keywords to reduce search overhead.</li>
+        </ul>
+        
+        <pre>index=linux_logs sourcetype=syslog "failed password"</pre>
+
+        <div class="screenshot-placeholder">
+            <!-- Replace with your screenshot showing the search results of failed logons -->
+            <img src="./Files/img/splunklab1.png" alt="Splunk initial log filtering screenshot">
+        </div>
+    </section>
+
+    <section class="step-card">
+        <h2>Step 2: Engineering the SPL Detection Query</h2>
+        <p>A single failed login is usually just a typo. However, 
+            multiple failures followed by a fast connection pattern 
+            from the same IP points to a brute-force attack. 
+            To catch this, we can use Splunk to build a query that 
+            groups logs into data.</p>
+        
+        <ul class="instruction-list">
+            <li><strong>Target the Logs:</strong> We begin by pulling 
+                the authentication events from our main 
+                index that explicitly contain the string 
+                "failed password".</li>
+            <li><strong>Extract Fields Inline (rex):</strong> Since syslog 
+                data can vary, we use a Regular Expression 
+                <code>(Regex)</code> to manually extract the target username 
+                <code>(target_user)</code> and the source IP address 
+                <code>(attacker_ip)</code> from the raw log message.</li>
+           <li><strong>Aggregate the Traffic:</strong> We use the stats command to group all events by the attacker's IP. At the same time, we calculate the total number of failures, count the distinct target accounts targeted <code>(dc)</code>, and stamp the exact microsecond the attack started <code>(min)</code> and ended <code>(max)</code>.</li>
+               <li><strong>Filter Out Noise:</strong> We apply a where threshold to filter out standard user errors. Only IP addresses with more than 5 failed attempts will show up.
+</li>
+<li><strong>Measure Attack Velocity:</strong> We calculate the difference between the first and last log entry to find the total duration of the attack in seconds.
+</li>
+<li><strong>Human-Readable Format:</strong> We convert the epoch timestamps into a standard date and time format, then sort the results so the most aggressive attacker appears at the very top.
+          </li>
+        </ul>
+
+        <pre>index=main sourcetype=syslog "failed password"
+| rex "Failed password for (?<target_user>\S+) from (?<attacker_ip>\d+\.\d+\.\d+\.\d+)"
+| stats count as total_failures, dc(target_user) as distinct_users, min(_time) as first_seen, max(_time) as last_seen by attacker_ip
+| where total_failures > 5
+| eval duration_seconds = last_seen - first_seen
+| convert ctime(first_seen) ctime(last_seen)
+| sort - total_failures</pre>
+
+        <div class="screenshot-placeholder">
+            <!-- Replace with your screenshot showing the statistics table output -->
+            <img src="./Files/img/splunklab2.png" alt="Splunk SPL statistical aggregation screenshot">
+        </div>
+    </section>
+
+    <section class="step-card">
+        <h2>Step 3: Creating a Real-Time SOC Alert Trigger</h2>
+        <p>Once the detection logic is verified, it must be automated to trigger an alert for Tier 1 SOC analysts whenever the threshold is breached.</p>
+        <ul class="instruction-list">
+            <li>Click on <strong>Save As</strong> in the top-right corner and select <strong>Alert</strong>.</li>
+            <li>Configure the scheduling, trigger conditions, and throttling parameters to prevent alert fatigue.</li>
+            <li>Set the alert operational parameters based on the following engineering standard:</li>
+        </ul>
+        
+        <table class="config-table">
+            <tr>
+                <th>Alert Parameter</th>
+                <th>Value / Configuration</th>
+            </tr>
+            <tr>
+                <td>Alert Title</td>
+                <td>SSH Attack Alert 1: Multiple SSH Login Failures Detected</td>
+            </tr>
+            <tr>
+                <td>Alert Type</td>
+                <td>Scheduled (Runs every week)</td>
+            </tr>
+            <tr>
+                <td>Trigger Condition</td>
+                <td>Number of Results > 0</td>
+            </tr>
+            <tr>
+                <td>Throttling</td>
+                <td>Suppress alerts from the same <code>src_ip</code> for 1 hour</td>
+            </tr>
+        </table>
+
+        <div class="screenshot-placeholder">
+            <!-- Replace with your screenshot of the Splunk Alert configuration pop-up -->
+            <img src="./Files/img/splunklab3.png" alt="Splunk Alert configuration screen">
+        </div>
+    </section>
+
+    <section class="step-card">
+        <h2>Step 4: Mapping to MITRE ATT&CK & Verification</h2>
+        <p>To align with industry standards, this detection is mapped directly to the cyber adversary framework, providing actionable context within the incident response pipeline.</p>
+        <ul class="instruction-list">
+            <li><strong>MITRE ATT&CK Mapping:</strong> T1110 - Brute Force (Credential Access).</li>
+            <li><strong>Incident Response Next Steps:</strong> Extract the offending <code>src_ip</code>, cross-reference it with Threat Intelligence feeds (e.g., VirusTotal/AlienVault), and dynamically apply an IP block rule on the edge firewall if the activity is un-orchestrated.</li>
+        </ul>
+    </section>
+
+    <!-------referencias -------->
+    <section class="step-card">
+        <details class="docs-dropdown">
+            <summary class="dropdown-title">References & Official Documentation</summary>
+            <div class="dropdown-content">
+                <p>To implement this detection logic, the following official Splunk documentation and resources were utilized for engineering the SPL query and understanding core log analytics architecture:</p>
+                
+                <ul class="instruction-list">
+                    <li>
+                        <strong><a href="https://docs.splunk.com/Documentation/Splunk/latest/SearchReference/Stats" target="_blank" style="color: var(--accent-color); text-decoration: none;">Splunk Search Reference: Stats Command</a></strong>
+                        <br><span style="color: #64748b; font-size: 0.9rem;">Explains statistical aggregation functions used to calculate total incident volume (<code>count</code>) and tracking unique targeted accounts using Distinct Count (<code>dc</code>).</span>
+                    </li>
+                    <li style="margin-top: 15px;">
+                        <strong><a href="https://docs.splunk.com/Documentation/Splunk/latest/SearchReference/Rex" target="_blank" style="color: var(--accent-color); text-decoration: none;">Splunk Search Reference: Rex Command</a></strong>
+                        <br><span style="color: #64748b; font-size: 0.9rem;">Details the implementation of inline Regular Expressions (Regex) to manually parse, extract, and isolate custom fields like <code>attacker_ip</code> and <code>target_user</code> from raw syslog streams.</span>
+                    </li>
+                    <li style="margin-top: 15px;">
+                        <strong><a href="https://docs.splunk.com/Documentation/Splunk/latest/SearchReference/Eval" target="_blank" style="color: var(--accent-color); text-decoration: none;">Splunk Search Reference: Eval Command</a></strong>
+                        <br><span style="color: #64748b; font-size: 0.9rem;">Provides the mechanics for executing mathematical operations on chronological event data (<code>last_seen - first_seen</code>) to accurately measure threat velocity in seconds.</span>
+                    </li>
+                    <li style="margin-top: 15px;">
+                        <strong><a href="https://docs.splunk.com/Documentation/Splunk/latest/Search/AbouttheSplunksearchlanguage" target="_blank" style="color: var(--accent-color); text-decoration: none;">Splunk Search Manual: About Search Processing Language (SPL)</a></strong>
+                        <br><span style="color: #64748b; font-size: 0.9rem;">Core framework reference covering standard data filtering rules, dataset sorting structures, and the functional behavior of sequential piping (<code>|</code>).</span>
+                    </li>
+                </ul>
+            </div>
+        </details>
+    </section>
+
+
+    
+
+    <style>
+        .docs-dropdown summary {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            cursor: pointer;
+            outline: none;
+            user-select: none;
+            padding: 5px;
+        }
+        
+        .docs-dropdown summary:hover {
+            color: #6366f1; /* Subtle purple hover effect matching your badge */
+        }
+
+        .dropdown-content {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #334155;
+        }
+        
+        .dropdown-content a:hover {
+            text-decoration: underline !important;
+        }
+    </style>
+
+
+<section class="step-card">
+        <details class="regex-dropdown">
+            <summary class="dropdown-title">Deep Dive: Understanding the Inline Regex (<code>rex</code>)</summary>
+            <div class="dropdown-content">
+                <p>When automated field extraction is not available for custom syslog formats, security analysts implement inline Regular Expressions (Regex) using the <code>rex</code> command to parse security events in real-time. Here is the technical breakdown of the extraction pattern utilized in this lab:</p>
+                
+                <table class="config-table">
+                    <tr>
+                        <th>Regex Token</th>
+                        <th>Technical Purpose & Behavior</th>
+                    </tr>
+                    <tr>
+                        <td><code>Failed password for </code></td>
+                        <td>Literal string anchor. Instructs the engine to locate the exact starting point of a failed authentication event.</td>
+                    </tr>
+                    <tr>
+                        <td><code>(?&lt;target_user&gt;\S+)</code></td>
+                        <td>Creates a dynamic field named <code>target_user</code>. The <code>\S+</code> token matches one or more non-whitespace characters, efficiently isolating the targeted username (e.g., <i>root</i>, <i>admin</i>) until the next space.</td>
+                    </tr>
+                    <tr>
+                        <td><code> from </code></td>
+                        <td>Literal string anchor used to transition between the compromised username data and network network layer telemetry.</td>
+                    </tr>
+                    <tr>
+                        <td><code>(?&lt;attacker_ip&gt;\d+\.\d+\.\d+\.\d+)</code></td>
+                        <td>Creates a dynamic field named <code>attacker_ip</code>. The <code>\d+</code> token matches numeric digits, while <code>\.</code> escapes the literal dot character. This strictly matches standard IPv4 structures (e.g., <i>192.168.0.11</i>).</td>
+                    </tr>
+                </table>
+            </div>
+        </details>
+    </section>
+
+    <style>
+        .regex-dropdown summary {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            cursor: pointer;
+            outline: none;
+            user-select: none;
+            padding: 5px;
+        }
+        
+        .regex-dropdown summary:hover {
+            color: #6366f1; /* Subtle purple hover effect matching your design system */
+        }
+
+        .dropdown-content {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #334155;
+        }
+    </style>
+
+
+    <footer>
+        <p>&copy; 2026 Jairo Loria - Junior Cybersecurity Agent</p>
+        <p>Documentation for Educational Purposes Only.</p>
+    </footer>
+</div>
+
+</body>
+</html>
